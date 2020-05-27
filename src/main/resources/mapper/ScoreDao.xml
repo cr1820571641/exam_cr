@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.cr.dao.ScoreDao">
+
+    <resultMap type="com.exam.cr.entity.po.Score" id="ScoreMap">
+        <result property="sid" column="sid" jdbcType="INTEGER"/>
+        <result property="qid" column="qid" jdbcType="INTEGER"/>
+        <result property="aid" column="aid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ScoreMap">
+        select
+          sid, qid, aid
+        from exam_cr.score
+        where sid = #{sid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ScoreMap">
+        select
+          sid, qid, aid
+        from exam_cr.score
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ScoreMap">
+        select
+          sid, qid, aid
+        from exam_cr.score
+        <where>
+            <if test="sid != null">
+                and sid = #{sid}
+            </if>
+            <if test="qid != null">
+                and qid = #{qid}
+            </if>
+            <if test="aid != null">
+                and aid = #{aid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="sid" useGeneratedKeys="true">
+        insert into exam_cr.score(qid, aid)
+        values (#{qid}, #{aid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update exam_cr.score
+        <set>
+            <if test="qid != null">
+                qid = #{qid},
+            </if>
+            <if test="aid != null">
+                aid = #{aid},
+            </if>
+        </set>
+        where sid = #{sid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from exam_cr.score where sid = #{sid}
+    </delete>
+
+</mapper>
